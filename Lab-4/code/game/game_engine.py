@@ -8,6 +8,14 @@ WHITE = (255, 255, 255)
 BOMB_BLACK = (30, 30, 30)
 FRUIT_COLORS = [(220, 60, 60), (230, 140, 40), (230, 200, 40), (90, 180, 90)]
 
+# After these the pointer can reappear somewhere else entirely, so the blade
+# must not be joined up across them.
+BLADE_BREAK_EVENTS = {
+    e for e in (getattr(pygame, "WINDOWLEAVE", None),
+                getattr(pygame, "WINDOWFOCUSLOST", None))
+    if e is not None
+}
+
 class GameEngine:
     def __init__(self, width, height):
         self.width = width
@@ -15,6 +23,7 @@ class GameEngine:
 
         self.fruits = []
         self.trail = []  # recent mouse positions, drawn as the "blade"
+        self._last_pos = None  # previous mouse position, start of the swept blade
 
         self.spawn_interval = 55  # frames between spawns
         self._spawn_timer = 0
@@ -40,16 +49,33 @@ class GameEngine:
     def handle_event(self, event):
         if event.type == pygame.MOUSEMOTION:
             self._handle_motion(event.pos)
+        elif event.type in BLADE_BREAK_EVENTS:
+            self._break_blade()
 
     def _handle_motion(self, pos):
         x, y = pos
+        if self._last_pos is None:
+            # First sample since the blade entered the window - there's no
+            # previous position to sweep from, so test the point on its own.
+            x1, y1 = x, y
+        else:
+            x1, y1 = self._last_pos
+
         for fruit in self.fruits:
-            if not fruit.sliced and fruit.contains_point(x, y):
+            if not fruit.sliced and fruit.intersects_segment(x1, y1, x, y):
                 self._slice(fruit)
 
+        self._last_pos = pos
         self.trail.append(pos)
         if len(self.trail) > 15:
             self.trail.pop(0)
+
+    def _break_blade(self):
+        # Forgetting the last position stops the next swipe from being joined to
+        # a stale one, which would sweep a segment clear across the screen and
+        # slice everything on the way.
+        self._last_pos = None
+        self.trail = []
 
     def _slice(self, fruit):
         fruit.sliced = True
