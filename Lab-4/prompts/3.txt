@@ -1,0 +1,5 @@
+Now I want to be able to start a new game after dying instead of having to close and reopen it. On the game over screen let me pick easy, medium or hard, or quit out.
+
+Harder should mean fruit coming faster and more bombs, easier the opposite — pick values that actually feel different and tell me what you went with so I can tweak them.
+
+One thing to watch: make sure starting a new game properly wipes everything from the last one. I don't want the old score, leftover fruit or the game over state hanging around.

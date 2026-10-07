@@ -1,0 +1,5 @@
+Hey, I've got a small Fruit Ninja style game in Pygame that I'm working on. I've pasted the three files below.
+
+The problem: when I swipe quickly across a fruit the blade goes straight through it and nothing happens — no slice, no score. But if I move the mouse slowly over the same fruit it cuts fine every time. My guess is it's only looking at wherever the mouse is at that instant instead of the line it travelled along, so a fast swipe just skips over the fruit between frames.
+
+Have a quick read of the code first and tell me if that's actually the cause, then fix it so fast swipes register properly. Also give me some way to test it without playing the game over and over — something I can just run and see pass or fail.
