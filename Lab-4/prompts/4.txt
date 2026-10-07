@@ -1,5 +1,0 @@
-Last feature — sound. I want a noise when you slice a fruit, a different one when you hit a bomb, and something for the game over moment.
-
-Two catches. I don't have any sound files and I'd rather not go downloading any, so can you generate the sounds in code instead? And my laptop's audio is flaky, so if sound fails to start up the game should just carry on silently rather than crashing. Also make sure the game over sound only plays once — I don't want it going off every frame while the screen is up.
-
-Once that's in, that's everything I wanted — so have a look over the whole lot and tell me whether any of the later changes broke something we did earlier, whether there's leftover code sitting around that isn't used any more, and anything that looks sloppy or could be done better. Then give me the final version of all three files.

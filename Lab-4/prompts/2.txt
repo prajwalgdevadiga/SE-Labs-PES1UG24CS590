@@ -1,5 +1,0 @@
-Nice, that works now. Next thing.
-
-At the moment when you hit a bomb or run out of lives, the game window just sits there frozen and prints "Game over" into the terminal, which is useless. I want a real game over screen inside the window showing the final score, with the game still visible but dimmed behind it.
-
-Important bit — it mustn't lock up. I should still be able to close the window with the X button, and in the next step I'm going to add a restart option so it needs to keep listening for key presses.
