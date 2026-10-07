@@ -14,7 +14,7 @@ import unittest
 import pygame
 
 from _support import (DARK_BLUE, FRUIT_X, FRUIT_Y, Fruit, blank_screen,
-                      make_engine, press, run, swipe)
+                      centred_texts, make_engine, press, run, swipe)
 
 
 def rendered_frame(engine):
@@ -23,14 +23,6 @@ def rendered_frame(engine):
     screen.fill(DARK_BLUE)
     engine.render(screen)
     return screen
-
-
-def screen_texts(engine):
-    """The centred strings the engine draws, captured instead of blitted."""
-    texts = []
-    engine._blit_centered = lambda screen, font, text, color, y: texts.append(text)
-    engine.render(blank_screen())
-    return texts
 
 
 class GameOverState(unittest.TestCase):
@@ -85,14 +77,14 @@ class GameOverScreen(unittest.TestCase):
         engine, _ = make_engine()
         engine.score = 7
         engine._end_game("You sliced a bomb")
-        texts = screen_texts(engine)
+        texts = centred_texts(engine)
         self.assertIn("GAME OVER", texts)
         self.assertIn("Final Score: 7", texts)
         self.assertIn("You sliced a bomb", texts)
 
     def test_nothing_is_drawn_over_the_game_while_playing(self):
         engine, _ = make_engine()
-        texts = screen_texts(engine)  # the HUD difficulty label is centred too
+        texts = centred_texts(engine)  # the HUD difficulty label is centred too
         self.assertNotIn("GAME OVER", texts)
         self.assertNotIn("Play again:", texts)
         background = rendered_frame(engine).get_at((10, 560))

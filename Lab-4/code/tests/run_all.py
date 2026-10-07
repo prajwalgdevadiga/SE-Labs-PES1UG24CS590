@@ -13,7 +13,9 @@ from test_game_over import GameOverInput, GameOverScreen, GameOverState
 from test_replay import (DifficultyPresets, ReplayInput, ReplayScreen,
                          ReplayWipesTheLastGame)
 from test_slice_detection import SliceDetection
+from test_sound import BoardSurvivesBadAudio, EngineAsksForSounds, GeneratedAudio
 
 if __name__ == "__main__":
     sys.exit(run(SliceDetection, GameOverState, GameOverScreen, GameOverInput,
-                 DifficultyPresets, ReplayWipesTheLastGame, ReplayInput, ReplayScreen))
+                 DifficultyPresets, ReplayWipesTheLastGame, ReplayInput, ReplayScreen,
+                 EngineAsksForSounds, BoardSurvivesBadAudio, GeneratedAudio))

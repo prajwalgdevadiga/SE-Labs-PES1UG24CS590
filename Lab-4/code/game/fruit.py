@@ -1,7 +1,8 @@
 import math
 
 class Fruit:
-    def __init__(self, x, y, vx, vy, gravity, radius=28, kind="fruit"):
+    def __init__(self, x, y, vx, vy, gravity, radius=28, kind="fruit",
+                 color=(255, 255, 255)):
         self.x = x
         self.y = y
         self.vx = vx
@@ -9,6 +10,7 @@ class Fruit:
         self.gravity = gravity
         self.radius = radius
         self.kind = kind  # "fruit" or "bomb"
+        self.color = color
         self.sliced = False
 
     def update(self):

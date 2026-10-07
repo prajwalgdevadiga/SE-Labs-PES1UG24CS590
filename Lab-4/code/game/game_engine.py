@@ -1,6 +1,7 @@
 import pygame
 import random
 from .fruit import Fruit
+from .sounds import SoundBoard
 
 # Game Engine
 
@@ -41,7 +42,7 @@ BLADE_BREAK_EVENTS = {
 }
 
 class GameEngine:
-    def __init__(self, width, height, difficulty=DEFAULT_DIFFICULTY):
+    def __init__(self, width, height, difficulty=DEFAULT_DIFFICULTY, sounds=None):
         self.width = width
         self.height = height
 
@@ -49,6 +50,7 @@ class GameEngine:
         self.font = pygame.font.SysFont("Arial", 28)
         self.title_font = pygame.font.SysFont("Arial", 64, bold=True)
         self.small_font = pygame.font.SysFont("Arial", 22)
+        self.sounds = SoundBoard() if sounds is None else sounds
         self.should_quit = False  # main loop watches this
 
         self.start_game(difficulty)
@@ -81,9 +83,9 @@ class GameEngine:
         gravity = 0.35
         kind = "bomb" if random.random() < self.bomb_chance else "fruit"
 
-        fruit = Fruit(x, self.height + 30, vx, vy, gravity, kind=kind)
-        fruit.color = BOMB_BLACK if kind == "bomb" else random.choice(FRUIT_COLORS)
-        self.fruits.append(fruit)
+        color = BOMB_BLACK if kind == "bomb" else random.choice(FRUIT_COLORS)
+        self.fruits.append(
+            Fruit(x, self.height + 30, vx, vy, gravity, kind=kind, color=color))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEMOTION:
@@ -137,19 +139,19 @@ class GameEngine:
     def _slice(self, fruit):
         fruit.sliced = True
         if fruit.kind == "bomb":
+            self.sounds.play("bomb")
             self._end_game("You sliced a bomb")
         else:
+            self.sounds.play("slice")
             self.score += 1
 
     def _end_game(self, reason):
         self.game_over = True
         self.game_over_reason = reason
         self._last_pos = None  # don't carry a stale swipe into the next game
-
-    def handle_input(self):
-        # Reserved for continuously-held-key input; this game is
-        # entirely mouse-driven, so there's nothing to poll here.
-        pass
+        # Played on the transition, not while the screen is up, so it sounds
+        # once per game however long the player leaves it sitting there.
+        self.sounds.play("game_over")
 
     def update(self):
         if self.game_over:
@@ -175,19 +177,20 @@ class GameEngine:
         self.fruits = still_alive
 
         if self.lives <= 0:
+            self.lives = 0  # two fruit can be missed in the same frame
             self._end_game("You ran out of lives")
 
     def render(self, screen):
         for fruit in self.fruits:
-            color = getattr(fruit, "color", WHITE)
-            pygame.draw.circle(screen, color, (int(fruit.x), int(fruit.y)), fruit.radius)
+            pygame.draw.circle(screen, fruit.color,
+                               (int(fruit.x), int(fruit.y)), fruit.radius)
 
         if len(self.trail) >= 2:
             pygame.draw.lines(screen, WHITE, False, self.trail, 3)
 
         score_text = self.font.render(f"Score: {self.score}", True, WHITE)
         screen.blit(score_text, (10, 10))
-        lives_text = self.font.render(f"Lives: {max(self.lives, 0)}", True, WHITE)
+        lives_text = self.font.render(f"Lives: {self.lives}", True, WHITE)
         screen.blit(lives_text, (self.width - 130, 10))
         self._blit_centered(screen, self.small_font,
                             DIFFICULTIES[self.difficulty]["label"], MUTED, 16)

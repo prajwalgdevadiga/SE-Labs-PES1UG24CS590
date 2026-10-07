@@ -16,24 +16,22 @@ DARK_BLUE = (20, 25, 45)
 clock = pygame.time.Clock()
 FPS = 60
 
-# Game loop
-engine = GameEngine(WIDTH, HEIGHT)
-
 def main():
+    engine = GameEngine(WIDTH, HEIGHT)
     running = True
     while running:
         SCREEN.fill(DARK_BLUE)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            engine.handle_event(event)
+            else:
+                engine.handle_event(event)
 
-        engine.handle_input()
         engine.update()
         engine.render(SCREEN)
 
-        # The game over screen is drawn as a normal frame, so the loop keeps
-        # turning; it asks to close via this flag rather than blocking.
+        # The game over screen is drawn as an ordinary frame, so the loop keeps
+        # turning; it asks to close through this flag rather than blocking.
         if engine.should_quit:
             running = False
 

@@ -28,9 +28,27 @@ FRUIT_X, FRUIT_Y = 350, 300  # where the test fruit is parked
 RADIUS = 28
 
 
-def make_engine(kind="fruit"):
+class Recorder:
+    """Stands in for the SoundBoard and remembers what was asked for.
+
+    Tests inject this so they never touch the real mixer, and so the game is
+    checked against the sound interface rather than against audio coming out.
+    """
+
+    enabled = True
+
+    def __init__(self):
+        self.played = []
+
+    def play(self, name):
+        self.played.append(name)
+
+
+def make_engine(kind="fruit", difficulty=None):
     """An engine holding one motionless fruit at (350, 300) and nothing else."""
-    engine = GameEngine(WIDTH, HEIGHT)
+    engine = GameEngine(WIDTH, HEIGHT, sounds=Recorder())
+    if difficulty:
+        engine.start_game(difficulty)
     engine.spawn_interval = 10 ** 9  # don't let update() spawn during a test
     fruit = Fruit(FRUIT_X, FRUIT_Y, vx=0, vy=0, gravity=0, radius=RADIUS, kind=kind)
     engine.fruits = [fruit]
@@ -56,6 +74,14 @@ def leave_window(engine):
 def blank_screen():
     """An off-screen surface to render into, standing in for the window."""
     return pygame.Surface((WIDTH, HEIGHT))
+
+
+def centred_texts(engine):
+    """The centred strings one rendered frame would show, captured not drawn."""
+    texts = []
+    engine._blit_centered = lambda screen, font, text, color, y: texts.append(text)
+    engine.render(blank_screen())
+    return texts
 
 
 def run(*test_cases):

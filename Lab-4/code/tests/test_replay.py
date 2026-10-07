@@ -15,8 +15,8 @@ import unittest
 
 import pygame
 
-from _support import (FRUIT_X, FRUIT_Y, HEIGHT, RADIUS, WIDTH, Fruit, GameEngine,
-                      blank_screen, make_engine, press, run, swipe)
+from _support import (FRUIT_X, FRUIT_Y, RADIUS, WIDTH, HEIGHT, Fruit, GameEngine,
+                      Recorder, centred_texts, make_engine, press, run, swipe)
 
 from game.game_engine import DIFFICULTIES
 
@@ -24,7 +24,7 @@ from game.game_engine import DIFFICULTIES
 def play_frames(difficulty, frames=6000, seed=5):
     """Run a game of the given difficulty and report what it threw up."""
     random.seed(seed)
-    engine = GameEngine(WIDTH, HEIGHT, difficulty)
+    engine = GameEngine(WIDTH, HEIGHT, difficulty, sounds=Recorder())
     engine.lives = 10 ** 6  # keep it running; we only care about the spawns
     spawned = []
     throw = engine.spawn_fruit
@@ -56,7 +56,7 @@ class DifficultyPresets(unittest.TestCase):
     def test_choosing_a_level_applies_all_of_its_settings(self):
         for name, settings in DIFFICULTIES.items():
             with self.subTest(difficulty=name):
-                engine = GameEngine(WIDTH, HEIGHT)
+                engine = GameEngine(WIDTH, HEIGHT, sounds=Recorder())
                 engine.start_game(name)
                 self.assertEqual(engine.difficulty, name)
                 self.assertEqual(engine.spawn_interval, settings["spawn_interval"])
@@ -130,8 +130,10 @@ class ReplayWipesTheLastGame(unittest.TestCase):
         start_game, which is exactly how a stale value would creep back.
         """
         press(self.engine, pygame.K_h)
-        fresh = GameEngine(WIDTH, HEIGHT, "hard")
-        skip = {"font", "title_font", "small_font"}  # surfaces, not state
+        fresh = GameEngine(WIDTH, HEIGHT, "hard", sounds=Recorder())
+        # Fonts and the sound board are collaborators that outlive a game,
+        # not per-game state, so start_game is right not to touch them.
+        skip = {"font", "title_font", "small_font", "sounds"}
         self.assertEqual({k: v for k, v in vars(self.engine).items() if k not in skip},
                          {k: v for k, v in vars(fresh).items() if k not in skip})
 
@@ -191,23 +193,17 @@ class ReplayInput(unittest.TestCase):
 
 class ReplayScreen(unittest.TestCase):
 
-    def centred_texts(self, engine):
-        texts = []
-        engine._blit_centered = lambda screen, font, text, color, y: texts.append(text)
-        engine.render(blank_screen())
-        return texts
-
     def test_screen_offers_all_four_choices(self):
         engine, _ = make_engine()
         engine._end_game("You sliced a bomb")
-        shown = " | ".join(self.centred_texts(engine))
+        shown = " | ".join(centred_texts(engine))
         for choice in ("Easy", "Medium", "Hard", "Esc"):
             self.assertIn(choice, shown)
 
     def test_hud_names_the_current_difficulty(self):
         engine, _ = make_engine()
         engine.start_game("hard")
-        self.assertIn("Hard", self.centred_texts(engine))
+        self.assertIn("Hard", centred_texts(engine))
 
 
 if __name__ == "__main__":
