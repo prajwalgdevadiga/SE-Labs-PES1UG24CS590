@@ -10,7 +10,6 @@ Assigned repo: [SETAPESU26/41_fruit-ninja](https://github.com/SETAPESU26/41_frui
 
 | Path | What it is |
 |---|---|
-| [`PROMPTS.md`](PROMPTS.md) | The prompts used with the vibe-coding tool, one per task |
 | `code/` | The game — starter code, then updated task by task |
 | `videos/` | 10-second gameplay recordings, before and after |
 | `chat/` | The vibe-coding chat history exported as PDF |
