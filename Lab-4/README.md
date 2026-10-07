@@ -19,10 +19,10 @@ Assigned repo: [SETAPESU26/41_fruit-ninja](https://github.com/SETAPESU26/41_frui
 
 | # | Task | Status |
 |---|---|---|
-| 1 | Refine collision detection — fast swipes pass through fruit | ☐ |
-| 2 | Implement a game-over screen instead of a console `print` | ☐ |
-| 3 | Add a replay option with Easy / Medium / Hard difficulty | ☐ |
-| 4 | Add sound feedback for slice, bomb and game over | ☐ |
+| 1 | Refine collision detection — fast swipes pass through fruit | ✅ |
+| 2 | Implement a game-over screen instead of a console `print` | ✅ |
+| 3 | Add a replay option with Easy / Medium / Hard difficulty | ✅ |
+| 4 | Add sound feedback for slice, bomb and game over | ✅ |
 
 ## Running it
 
@@ -37,7 +37,7 @@ pip install pygame-ce
 cd Lab-4/code && python main.py
 ```
 
-## The bug, reproduced
+## The bug, as it was before the fix
 
 `Fruit.contains_point()` tests a single point against the fruit's circle. At 60 FPS a fast
 swipe reports two `MOUSEMOTION` positions that straddle the fruit, so no reported point ever
@@ -50,4 +50,24 @@ With a fruit parked at (350, 300) radius 28:
 | `(350, 300)` — slow, lands inside the circle | yes |
 | `(150, 300)` then `(550, 300)` — segment passes through the centre | **no** |
 
-That is what the *before* video needs to show: swipe fast through a fruit and watch it survive.
+That is what the *before* video shows. It is fixed now — `Fruit.intersects_segment()` tests the
+segment between consecutive mouse samples instead of the single current point.
+
+## Tests
+
+```bash
+cd Lab-4/code && python tests/run_all.py
+```
+
+61 headless checks across collision detection, the game-over screen, replay/difficulty and the
+generated audio. They run with dummy SDL drivers, so no window or audio device is needed.
+
+## Difficulty settings
+
+| | Spawn interval | Bomb chance | Speed | Lives |
+|---|---|---|---|---|
+| Easy | 75 frames | 8% | 0.90 | 5 |
+| Medium | 50 frames | 15% | 1.00 | 3 |
+| Hard | 30 frames | 25% | 1.15 | 2 |
+
+On the game-over screen: **E** / **M** / **H** to replay, **Q** or **Esc** to quit.
