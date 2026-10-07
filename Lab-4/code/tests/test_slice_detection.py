@@ -1,6 +1,6 @@
 """Slice-detection checks for Task 1 - fast swipes must register.
 
-Runs headless (no game window, no mouse), so it can be run on its own:
+Runs headless (no game window, no mouse):
 
     python tests/test_slice_detection.py
 
@@ -8,39 +8,11 @@ Every check feeds the engine a sequence of mouse positions, exactly as
 pygame's MOUSEMOTION events would, and asserts what got sliced.
 """
 
-import os
 import sys
 import unittest
 
-# Pick the dummy SDL backends so pygame starts without a display or audio
-# device, and make the project importable however this file is launched.
-os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
-os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-import pygame
-
-from game.fruit import Fruit
-from game.game_engine import GameEngine
-
-WIDTH, HEIGHT = 700, 600
-FRUIT_X, FRUIT_Y = 350, 300  # where the test fruit is parked
-RADIUS = 28
-
-
-def make_engine(kind="fruit"):
-    """An engine holding one motionless fruit at (350, 300) and nothing else."""
-    engine = GameEngine(WIDTH, HEIGHT)
-    engine.spawn_interval = 10 ** 9  # don't let update() spawn during a test
-    fruit = Fruit(FRUIT_X, FRUIT_Y, vx=0, vy=0, gravity=0, radius=RADIUS, kind=kind)
-    engine.fruits = [fruit]
-    return engine, fruit
-
-
-def swipe(engine, *positions):
-    """Feed positions in as real MOUSEMOTION events, one per frame."""
-    for pos in positions:
-        engine.handle_event(pygame.event.Event(pygame.MOUSEMOTION, pos=pos))
+from _support import (FRUIT_X, FRUIT_Y, RADIUS, Fruit, leave_window, make_engine,
+                      run, swipe)
 
 
 class SliceDetection(unittest.TestCase):
@@ -114,7 +86,7 @@ class SliceDetection(unittest.TestCase):
         """Re-entering elsewhere must not sweep a segment across the screen."""
         engine, fruit = make_engine()
         swipe(engine, (150, FRUIT_Y))
-        engine.handle_event(pygame.event.Event(pygame.WINDOWLEAVE))
+        leave_window(engine)
         swipe(engine, (550, FRUIT_Y))
         self.assertFalse(fruit.sliced)
         self.assertEqual(engine.score, 0)
@@ -132,21 +104,5 @@ class SliceDetection(unittest.TestCase):
         self.assertLessEqual(len(engine.trail), 15)
 
 
-def main():
-    pygame.init()  # GameEngine builds a font, so pygame must be initialised
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(SliceDetection)
-    result = unittest.TextTestRunner(verbosity=2).run(suite)
-    pygame.quit()
-
-    total = result.testsRun
-    bad = len(result.failures) + len(result.errors)
-    print()
-    if bad:
-        print(f"FAIL - {bad} of {total} checks failed")
-    else:
-        print(f"PASS - all {total} checks passed")
-    return 1 if bad else 0
-
-
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(run(SliceDetection))
