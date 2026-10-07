@@ -32,6 +32,11 @@ def main():
         engine.update()
         engine.render(SCREEN)
 
+        # The game over screen is drawn as a normal frame, so the loop keeps
+        # turning; it asks to close via this flag rather than blocking.
+        if engine.should_quit:
+            running = False
+
         pygame.display.flip()
         clock.tick(FPS)
 
