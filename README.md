@@ -9,6 +9,7 @@ PES University, Dept. of CSE
 | [**Lab 2**](Lab2/) | Agile Backlog Creation & Sprint Simulation in Jira | [Product backlog](Lab2/docs/01_Product_Backlog.xlsx) · [Sprint reflection](Lab2/docs/02_Reflection.pdf) · [Jira evidence](Lab2/docs/Screenshots%20pdf.pdf) |
 | [**Lab 3**](Lab3/) | Component Modelling & Architectural Pattern Selection | [Component diagram](Lab3/docs/01_Component_Diagram.pdf) · [Architecture justification](Lab3/docs/02_Architecture_Justification.pdf) · [draw.io source](Lab3/diagram/subscription_box_component.drawio) |
 | [**Lab 4**](Lab-4/) | Vibe Coding | [Before video](Lab-4/videos/before%20video.mp4) · [After video](Lab-4/videos/after%20video.mp4) · [Updated code](Lab-4/code/) · [Chat history](Lab-4/chat/Lab4_chat_history.pdf) |
+| [**Lab 5**](Lab-5/) | Static Code Analysis | [Issues table](Lab-5/issues.md) · [Reflection](Lab-5/reflection.md) · [Before reports](Lab-5/reports/before/) · [After reports](Lab-5/reports/after/) |
 | [**Lab 6**](Lab-6/) | Code and Branch Coverage Analysis | [Code coverage tests](Lab-6/CodeCoverageTest_41_laundry_service.py) · [Branch coverage tests](Lab-6/BranchCoverageTest_41_laundry_service.py) · [Coverage reports](Lab-6/screenshots/) |
 
 ## Labs 1–3 — Problem Statement #35 | Retail, E-Commerce & Finance
@@ -23,6 +24,14 @@ These three build on each other. The functional requirements written in Lab 1 be
 Epic and User Stories of the Lab 2 product backlog, and drive the component boundaries and
 the Microservices decision in Lab 3 — every story and every component carries a *Traces to*
 line back to the FR or NFR it implements.
+
+## Lab 5 — Static Code Analysis
+
+Assigned repo: [SETAPESU26/L5_41_library_catalog_system](https://github.com/SETAPESU26/L5_41_library_catalog_system),
+forked to [prajwalgdevadiga/L5_41_library_catalog_system](https://github.com/prajwalgdevadiga/L5_41_library_catalog_system).
+Pylint, Bandit and Flake8 run against a library catalog script: **5.32/10 to 10.00/10**,
+all five Bandit findings cleared including an `eval` and a shell injection, and every
+Flake8 issue fixed. One commit per tool.
 
 ## Lab 6 — Code and Branch Coverage Analysis
 
