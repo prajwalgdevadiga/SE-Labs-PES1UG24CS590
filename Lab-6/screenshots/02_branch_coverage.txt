@@ -1,0 +1,19 @@
+PS C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-6> coverage run --branch -m pytest BranchCoverageTest_41_laundry_service.py
+============================= test session starts =============================
+platform win32 -- Python 3.14.5, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-6
+plugins: anyio-4.15.1
+collected 36 items
+
+BranchCoverageTest_41_laundry_service.py ............................... [ 86%]
+.....                                                                    [100%]
+
+============================= 36 passed in 0.11s ==============================
+
+PS C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-6> coverage report -m
+Name                                       Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------------------------
+BranchCoverageTest_41_laundry_service.py      76      0      0      0   100%
+laundry_service.py                            37      0     26      0   100%
+--------------------------------------------------------------------------------------
+TOTAL                                        113      0     26      0   100%
