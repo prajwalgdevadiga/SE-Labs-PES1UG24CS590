@@ -1,0 +1,3 @@
+PS C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-7\code> pytest test_laundry_service.py
+.........                                                                [100%]
+9 passed in 2.27s
