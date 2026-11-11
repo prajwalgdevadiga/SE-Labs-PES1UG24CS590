@@ -4,5 +4,11 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# tool and run artefacts
+.coverage
+.pytest_cache/
+.hypothesis/
+catalog_export.txt
+
 # upstream clone of the assigned Lab 4 repo - working copy lives in Lab-4/code
 41_fruit-ninja/

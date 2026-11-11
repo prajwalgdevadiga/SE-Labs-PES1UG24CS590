@@ -14,7 +14,7 @@ a small laundry-service pricing module.
 | `test_laundry_service.py` | The two starter tests shipped with the repo |
 | `CodeCoverageTest_41_laundry_service.py` | Statement-coverage suite — 12 tests |
 | `BranchCoverageTest_41_laundry_service.py` | Branch-coverage suite — 36 tests |
-| `screenshots/` | Terminal output for each run, as PNG and as plain text |
+| `screenshots/` | Terminal output for each run |
 
 ## Results
 

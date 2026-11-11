@@ -14,8 +14,7 @@ Fuzzed with [Hypothesis](https://hypothesis.readthedocs.io/).
 | [`Lab7_FuzzTesting_Screenshots.pdf`](Lab7_FuzzTesting_Screenshots.pdf) | The four required screenshots with commentary |
 | `code/laundry_service.py` | The hardened application |
 | `code/test_laundry_service.py` | The completed Hypothesis suite |
-| `buggy/laundry_service.py` | The original, kept for comparison |
-| `screenshots/` | Each terminal session as PNG and plain text |
+| `screenshots/` | The four terminal screenshots, one per required step |
 
 ## Results
 
