@@ -1,0 +1,23 @@
+PS C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-7\code> python laundry_service.py
+==== Running parse_order ====
+Enter garment:weight in kg (e.g. regular:6): Garment and Weight: ('Regular', 6.0)
+
+==== Running weight_average ====
+Enter garment weights as CSV (e.g. 3,5,8): Average Weight: 5
+
+==== Running payable_charge ====
+Enter charge|discount (e.g. 300|40): Payable Charge: 314.0
+
+PS C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-7\code> python laundry_service.py   # same program, malforme
+    d input
+==== Running parse_order ====
+Enter garment:weight in kg (e.g. regular:6): Traceback (most recent call last):
+  File "C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-7\code\laundry_service.py", line 31, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-7\code\laundry_service.py", line 17, in main
+    result = parse_order(user_input)
+  File "C:\Users\prajw\Desktop\SE-Labs-PES1UG24CS590\Lab-7\code\laundry_service.py", line 2, in parse_order
+    garment, kg = text.split(':')
+    ^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
